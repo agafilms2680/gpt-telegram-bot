@@ -20,10 +20,15 @@ def webhook():
     chat_id = message.get("chat", {}).get("id")
     text = message.get("text")
 
-    if not text:
+      if not text:
         return "ok"
 
+    print(f"Received message: {text}")
+
     response = ask_gpt(text)
+
+    print(f"GPT response: {response}")
+
     send_message(chat_id, response)
     return "ok"
 
