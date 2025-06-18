@@ -9,25 +9,22 @@ if not TELEGRAM_TOKEN:
     raise ValueError("TELEGRAM_TOKEN is not set!")
 TELEGRAM_API_URL = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}"
 
-@app.route("/")
-def index():
-    return "Bot is running!"
-
 @app.route("/webhook", methods=["POST"])
 def webhook():
     data = request.get_json()
+    print("Incoming Telegram update:", data)
+
     message = data.get("message", {})
     chat_id = message.get("chat", {}).get("id")
     text = message.get("text")
 
-      if not text:
+    if not text:
         return "ok"
 
-    print(f"Received message: {text}")
+    print("Received message:", text)
 
     response = ask_gpt(text)
-
-    print(f"GPT response: {response}")
+    print("GPT response:", response)
 
     send_message(chat_id, response)
     return "ok"
