@@ -14,8 +14,17 @@ def webhook():
     data = request.get_json()
     print("=== Incoming JSON from Telegram ===")
     print(data)
-    return "ok"
 
+    message = data.get("message", {})
+    chat_id = message.get("chat", {}).get("id")
+    text = message.get("text")
+
+    if not text:
+        return "ok"
+
+    response = ask_gpt(text)
+    send_message(chat_id, response)
+    return "ok"
 
 def send_message(chat_id, text):
     url = f"{TELEGRAM_API_URL}/sendMessage"
@@ -23,5 +32,5 @@ def send_message(chat_id, text):
     requests.post(url, json=payload)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8000)
+    app.run(host="0.0.0.0", port=8080)
 
