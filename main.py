@@ -4,14 +4,14 @@ import os
 from utils.openai_client import ask_gpt
 
 app = Flask(__name__)
-TELEGRAM_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
+TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN")
 TELEGRAM_API_URL = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}"
 
 @app.route("/")
 def index():
     return "Bot is running!"
 
-@app.route("/webhook", methods=["POST"])
+@app.route("/", methods=["POST"])
 def webhook():
     data = request.get_json()
     message = data.get("message", {})
