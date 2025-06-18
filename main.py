@@ -12,22 +12,10 @@ TELEGRAM_API_URL = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}"
 @app.route("/webhook", methods=["POST"])
 def webhook():
     data = request.get_json()
-    print("Incoming Telegram update:", data)
-
-    message = data.get("message", {})
-    chat_id = message.get("chat", {}).get("id")
-    text = message.get("text")
-
-    if not text:
-        return "ok"
-
-    print("Received message:", text)
-
-    response = ask_gpt(text)
-    print("GPT response:", response)
-
-    send_message(chat_id, response)
+    print("=== Incoming JSON from Telegram ===")
+    print(data)
     return "ok"
+
 
 def send_message(chat_id, text):
     url = f"{TELEGRAM_API_URL}/sendMessage"
